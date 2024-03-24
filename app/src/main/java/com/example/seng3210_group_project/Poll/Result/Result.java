@@ -6,6 +6,7 @@ import com.example.seng3210_group_project.Poll.Result.Answer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Result {
 
@@ -28,8 +29,6 @@ public class Result {
     public int getAnswerResult(int questionId, String choice){
         int sumAns = 0;
 
-
-
         for (Answer answer:answerList) {
             if(answer.getAnswerValue(questionId) == choice){
                 sumAns++;
@@ -40,7 +39,7 @@ public class Result {
 
     public HashMap<String, Integer> getQuestionResult(int questoionId){
         HashMap<String, Integer> questionResult = new HashMap<>();
-        String[] choices = poll.getQuestion().getChoices();
+        List<String> choices = poll.getQuestion().getChoices();
 
         for (String choice: choices) {
             questionResult.put(choice, getAnswerResult(questoionId, choice));

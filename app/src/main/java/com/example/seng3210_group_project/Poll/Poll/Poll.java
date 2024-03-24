@@ -5,18 +5,20 @@ import java.util.ArrayList;
 public class Poll {
 
     private int poll_id;
+
+    private String pollName;
     private String description;
     private Question question;
 
-    private String manager;
+    //For Future use with user authentication
+    //private String manager;
 
     ArrayList<Question> questionList;
 
     //Constructor
-    Poll(int poll_id, String description, String manager){
+    public Poll(int poll_id, String pollName, String description){
         this.poll_id = poll_id;
         this.description = description;
-        this.manager = manager;
         questionList = new ArrayList<>();
     }
 
@@ -39,13 +41,13 @@ public class Poll {
         return description;
     }
 
-    public String getManager(){
-        return  manager;
-    }
+    //public String getManager(){return  manager;}
 
 
     //Add question to the poll
     public void addQuestion(Question question){
+
+
         questionList.add(question);
     }
 

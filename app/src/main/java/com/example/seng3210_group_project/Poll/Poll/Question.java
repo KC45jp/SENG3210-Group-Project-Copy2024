@@ -1,19 +1,18 @@
 package com.example.seng3210_group_project.Poll.Poll;
 
+import java.util.List;
+
 public class Question {
 
     private int questionId;
-    private int questionIdCounter = 0;
 
     private String description;
 
-    private String[] choices;
+    private List<String> choices;
 
-    Question(String description, String[] Choice){
-        questionId = questionIdCounter;
+    public Question(int questionId, String description){
+        this.questionId = questionId;
         this.description = description;
-        this.choices = choices;
-        questionIdCounter++;
     }
 
     public int getQuestionId(){
@@ -23,12 +22,16 @@ public class Question {
         return description;
     }
 
-    public  String[] getChoices(){
+    public void addChoices(String choiceDesc){
+        choices.add(choiceDesc);
+    }
+
+    public  List<String> getChoices(){
         return choices;
     }
 
     public int choiceLength(){
-        return choices.length;
+        return choices.size();
     }
 
 
