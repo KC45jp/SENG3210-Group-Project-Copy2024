@@ -1,5 +1,6 @@
 package com.example.seng3210_group_project.Poll.Poll;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
@@ -13,6 +14,7 @@ public class Question {
     public Question(int questionId, String description){
         this.questionId = questionId;
         this.description = description;
+        choices = new ArrayList<>();
     }
 
     public int getQuestionId(){

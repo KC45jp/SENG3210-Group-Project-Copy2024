@@ -39,7 +39,7 @@ public class Result {
 
     public HashMap<String, Integer> getQuestionResult(int questoionId){
         HashMap<String, Integer> questionResult = new HashMap<>();
-        List<String> choices = poll.getQuestion().getChoices();
+        List<String> choices = poll.getQuestion(questoionId).getChoices();
 
         for (String choice: choices) {
             questionResult.put(choice, getAnswerResult(questoionId, choice));

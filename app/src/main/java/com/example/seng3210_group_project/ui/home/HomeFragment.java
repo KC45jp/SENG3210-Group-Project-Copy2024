@@ -1,5 +1,8 @@
 package com.example.seng3210_group_project.ui.home;
 
+
+import static java.lang.Integer.max;
+
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,6 +20,11 @@ import com.example.seng3210_group_project.Poll.Poll.Poll;
 import com.example.seng3210_group_project.Poll.Poll.Question;
 import com.example.seng3210_group_project.R;
 import com.example.seng3210_group_project.databinding.FragmentHomeBinding;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +34,10 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     Poll poll;
     Question question;
+
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference dbReference;
+
 
     int pollId = 0;
 
@@ -58,6 +70,11 @@ public class HomeFragment extends Fragment {
     @Override
     public void onStart(){
         super.onStart();
+
+        firebaseDatabase = FirebaseDatabase.getInstance("https://seng3210-group-project-default-rtdb.firebaseio.com/");
+        dbReference = firebaseDatabase.getReference("Polls");
+
+
         buttonCreatePoll = (Button) getActivity().findViewById(R.id.buttonSubmit);
         buttonCancel = (Button) getActivity().findViewById(R.id.buttonCancel);
         pollName = (EditText) getActivity().findViewById(R.id.editTexPollName);
@@ -81,6 +98,33 @@ public class HomeFragment extends Fragment {
         //Initialize
         buttonCancel.setEnabled(false);
 
+        //DatabaseCheck, Renew Poll id;
+        dbReference.addValueEventListener(new ValueEventListener() {
+            Poll dbReferencePoll;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                int dbPollIDMAX = 0;
+                for (DataSnapshot dataSnapshot:
+                        snapshot.getChildren()) {
+                    if(dataSnapshot.child("pollId").exists()){
+                        dbPollIDMAX = max(dbPollIDMAX, Integer.valueOf(dataSnapshot.child("pollId").getValue().toString()));
+                    }
+
+
+                }
+                pollId = dbPollIDMAX+1;
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
+                        .setTitle("Connection Error")
+                        .setMessage("DB not Found")
+                        .setPositiveButton("OK",null)
+                        .show();
+            }
+        });
+
         buttonCreatePoll.setOnClickListener(new View.OnClickListener() {
 
             //I feel this questionCOunter should be somewhere else but I could not find better way
@@ -88,9 +132,29 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+
                 if(isPollFilled() && poll == null){
+
                     poll = new Poll(pollId, pollName.getText().toString(), pollDesc.getText().toString());
                     questionCounter = addQuestion(questionCounter);
+
+                    dbReference.child(poll.idToString()).child("pollId").setValue(poll.getPollId());
+                    dbReference.child(poll.idToString()).child("pollName").setValue(poll.getPollName());
+                    dbReference.child(poll.idToString()).child("pollDesc").setValue(poll.getDescription());
+
+                    for (Question question:
+                         poll.getQuestions()) {
+                        dbReference.child(poll.idToString()).child("Questions").child("questionId").setValue(question.getQuestionId());
+                        dbReference.child(poll.idToString()).child("Questions").child("questionDesc").setValue(question.getDescription());
+                        int choiceCounter = 0;
+
+                        for (String choice:
+                             question.getChoices()) {
+                            dbReference.child(poll.idToString()).child("Questions").child("choices").child(String.valueOf(choiceCounter)).setValue(choice);
+                            choiceCounter++;
+                        }
+
+                    }
                     setIsCreationMode(false);
                 }
                 else if (poll != null) {
@@ -132,7 +196,7 @@ public class HomeFragment extends Fragment {
     //Check the mode of the function
     void setIsCreationMode(boolean bool){
         isCreationMode = bool;
-        poll.clear();//Clear out List
+        poll = null;//Clear out List
     }
 
     //Check if user input data or return false
@@ -163,7 +227,7 @@ public class HomeFragment extends Fragment {
             }
         }
         poll.addQuestion(question);
-        return questionCounter++;
+        return questionCounter+1;
     }
 
 

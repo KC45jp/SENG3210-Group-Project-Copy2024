@@ -1,10 +1,13 @@
 package com.example.seng3210_group_project.Poll.Poll;
 
+import android.util.Log;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class Poll {
 
-    private int poll_id;
+    private int pollId;
 
     private String pollName;
     private String description;
@@ -15,9 +18,14 @@ public class Poll {
 
     ArrayList<Question> questionList;
 
+
+    public Poll(){
+
+    }
     //Constructor
     public Poll(int poll_id, String pollName, String description){
-        this.poll_id = poll_id;
+        this.pollId = poll_id;
+        this.pollName = pollName;
         this.description = description;
         questionList = new ArrayList<>();
     }
@@ -33,27 +41,40 @@ public class Poll {
     }
      */
 
-    public int getPoll_id() {
-        return poll_id;
+    public int getPollId() {
+        return pollId;
     }
 
     public String getDescription() {
         return description;
     }
 
+    public String getPollName(){ return pollName;};
+
     //public String getManager(){return  manager;}
 
 
     //Add question to the poll
     public void addQuestion(Question question){
-
-
         questionList.add(question);
     }
 
-    public Question getQuestion() {
-        return question;
+    public Question getQuestion(int questionID) {
+        for (Question question:
+             questionList) {
+            if(question.getQuestionId() == questionID){
+                return question;
+            }
+        }
+        Log.d("Question Class", "ERROR cannot find message");
+        return null;
     }
+
+
+    public List<Question> getQuestions(){
+        return questionList;
+    }
+
 
     public int questionLength(){
         return questionList.size();
@@ -67,6 +88,10 @@ public class Poll {
     @Override
     public String toString(){
         return description;
+    }
+
+    public String idToString(){
+        return String.valueOf(pollId);
     }
 
 
