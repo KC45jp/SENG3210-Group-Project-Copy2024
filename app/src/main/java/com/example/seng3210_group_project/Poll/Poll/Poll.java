@@ -57,7 +57,9 @@ public class Poll {
         return questionList.size();
     }
 
-
+    public void clear(){
+        questionList.clear();
+    }
 
     //Return String
     @Override
