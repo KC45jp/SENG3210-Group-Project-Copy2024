@@ -11,6 +11,10 @@ public class Question {
 
     private List<String> choices;
 
+    public Question(){
+        choices = new ArrayList<>();
+
+    }
     public Question(int questionId, String description){
         this.questionId = questionId;
         this.description = description;
@@ -30,6 +34,14 @@ public class Question {
 
     public  List<String> getChoices(){
         return choices;
+    }
+
+
+    public void setQuestionId(int questionId) {
+        this.questionId = questionId;
+    }
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int choiceLength(){

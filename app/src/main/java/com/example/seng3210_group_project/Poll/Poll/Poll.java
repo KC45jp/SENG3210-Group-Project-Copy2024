@@ -1,9 +1,10 @@
 package com.example.seng3210_group_project.Poll.Poll;
 
 import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
+
+
 
 public class Poll {
 
@@ -11,6 +12,8 @@ public class Poll {
 
     private String pollName;
     private String description;
+
+    private String password;
     private Question question;
 
     //For Future use with user authentication
@@ -20,26 +23,29 @@ public class Poll {
 
 
     public Poll(){
-
+        questionList = new ArrayList<>();
     }
     //Constructor
-    public Poll(int poll_id, String pollName, String description){
-        this.pollId = poll_id;
+    public Poll(int pollId, String pollName, String description){
+        this.pollId = pollId;
         this.pollName = pollName;
         this.description = description;
         questionList = new ArrayList<>();
     }
 
-    //getter and setter
-    /*
-    public void setPoll_id(int poll_id) {
-        this.poll_id = poll_id;
+
+    public void setPoll_id(int pollId) {
+        this.pollId = pollId;
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
-     */
+
+    public void setPollName(String pollName){
+        this.pollName = pollName;
+    }
+
 
     public int getPollId() {
         return pollId;
@@ -53,6 +59,12 @@ public class Poll {
 
     //public String getManager(){return  manager;}
 
+
+    public void setPassword(String password) {
+
+        //Seriously no Hash!? Yeah I know... it is better but sometime I cannot
+        this.password = password;
+    }
 
     //Add question to the poll
     public void addQuestion(Question question){

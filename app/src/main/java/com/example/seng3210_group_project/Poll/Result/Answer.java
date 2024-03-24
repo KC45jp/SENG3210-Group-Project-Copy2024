@@ -16,6 +16,7 @@ public class Answer {
     private HashMap<Integer, String> answerHash;
 
     Answer(){
+        answerHash = new HashMap<>();
     }
 
     Answer(int pollId){

@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -75,8 +74,9 @@ public class HomeFragment extends Fragment {
         dbReference = firebaseDatabase.getReference("Polls");
 
 
-        buttonCreatePoll = (Button) getActivity().findViewById(R.id.buttonSubmit);
-        buttonCancel = (Button) getActivity().findViewById(R.id.buttonCancel);
+
+        buttonCreatePoll = (Button) getActivity().findViewById(R.id.buttonSubmitCreate);
+        buttonCancel = (Button) getActivity().findViewById(R.id.buttonCancelCreate);
         pollName = (EditText) getActivity().findViewById(R.id.editTexPollName);
         pollDesc = getActivity().findViewById(R.id.editPollDesc);
         questionDesc = getActivity().findViewById(R.id.editTextQuestion);
@@ -137,22 +137,26 @@ public class HomeFragment extends Fragment {
 
                     poll = new Poll(pollId, pollName.getText().toString(), pollDesc.getText().toString());
                     questionCounter = addQuestion(questionCounter);
+                    String pollId = "pollId" + questionCounter;
 
-                    dbReference.child(poll.idToString()).child("pollId").setValue(poll.getPollId());
-                    dbReference.child(poll.idToString()).child("pollName").setValue(poll.getPollName());
-                    dbReference.child(poll.idToString()).child("pollDesc").setValue(poll.getDescription());
+                    dbReference.child(pollId).setValue(poll.getPollId());
+                    dbReference.child(pollId).child("pollName").setValue(poll.getPollName());
+                    dbReference.child(pollId).child("pollDesc").setValue(poll.getDescription());
 
+                   int questionCounter = 0;
                     for (Question question:
                          poll.getQuestions()) {
-                        dbReference.child(poll.idToString()).child("Questions").child("questionId").setValue(question.getQuestionId());
-                        dbReference.child(poll.idToString()).child("Questions").child("questionDesc").setValue(question.getDescription());
+
+                        dbReference.child(pollId).child("Questions").child("questionId"+questionCounter).setValue(question.getQuestionId());
+                        dbReference.child(pollId).child("Questions").child("questionId" + questionCounter).child("questionDesc").setValue(question.getDescription());
                         int choiceCounter = 0;
 
                         for (String choice:
                              question.getChoices()) {
-                            dbReference.child(poll.idToString()).child("Questions").child("choices").child(String.valueOf(choiceCounter)).setValue(choice);
+                            dbReference.child(pollId).child("Questions").child("questionId"+questionCounter).child("choices").child(String.valueOf(choiceCounter)).setValue(choice);
                             choiceCounter++;
                         }
+                        questionCounter++;
 
                     }
                     setIsCreationMode(false);
