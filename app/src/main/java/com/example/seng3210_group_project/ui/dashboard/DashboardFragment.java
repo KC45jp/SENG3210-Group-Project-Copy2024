@@ -82,6 +82,8 @@ public class DashboardFragment extends Fragment {
         textPollName = getActivity().findViewById(R.id.textViewPollName);
         textPollDesc = getActivity().findViewById(R.id.textViewPollDescription);
 
+        questionBox = getActivity().findViewById(R.id.verticalBoxAnswer);
+
 
         buttonLoad.setOnClickListener(new View.OnClickListener() {
 
@@ -156,9 +158,14 @@ public class DashboardFragment extends Fragment {
                                                 }
 
                                             }
-
+                                            //Deal with UI
                                             textPollName.setText(poll.getPollName());
                                             textPollDesc.setText(poll.getDescription());
+
+                                            TextView textQuestionDesc = new TextView(getActivity());
+                                            questionBox.addView(textQuestionDesc);
+
+
                                         }
                                     });
 
