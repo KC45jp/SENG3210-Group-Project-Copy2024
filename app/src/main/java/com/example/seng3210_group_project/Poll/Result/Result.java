@@ -11,9 +11,7 @@ import java.util.List;
 public class Result {
 
     private Poll poll;
-    private Question question;
     private Answer answer;
-
     ArrayList<Answer> answerList;
 
     Result(Poll poll){

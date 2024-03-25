@@ -4,12 +4,20 @@ package com.example.seng3210_group_project.ui.home;
 import static java.lang.Integer.max;
 
 import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipDescription;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.icu.text.NumberFormat;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -38,7 +46,7 @@ public class HomeFragment extends Fragment {
     DatabaseReference dbReference;
 
 
-    int pollId = 0;
+    //int pollId = 0;
 
     Boolean isCreationMode = false;
 
@@ -51,6 +59,8 @@ public class HomeFragment extends Fragment {
 
     //View choices;
     List<EditText> choiceList = new ArrayList<>();
+
+    TextView pollIdText;
 
 
 
@@ -81,6 +91,7 @@ public class HomeFragment extends Fragment {
         pollDesc = getActivity().findViewById(R.id.editPollDesc);
         questionDesc = getActivity().findViewById(R.id.editTextQuestion);
         //choices = getActivity().findViewById(R.id.choiceList);
+        pollIdText = new TextView(getActivity());
 
         //Comment by Keishi
         //I wanted to make it loop to seach in Liner View but we do not have time for that unfortunatelly.
@@ -96,7 +107,6 @@ public class HomeFragment extends Fragment {
         choiceList.add(choice4);
 
         //Initialize
-        buttonCancel.setEnabled(false);
 
         //DatabaseCheck, Renew Poll id;
         dbReference.addValueEventListener(new ValueEventListener() {
@@ -107,13 +117,14 @@ public class HomeFragment extends Fragment {
                 int dbPollIDMAX = 0;
                 for (DataSnapshot dataSnapshot:
                         snapshot.getChildren()) {
-                    if(dataSnapshot.child("pollId").exists()){
-                        dbPollIDMAX = max(dbPollIDMAX, Integer.valueOf(dataSnapshot.child("pollId").getValue().toString()));
+                    if(dataSnapshot.exists()){
+                        String pollId = dataSnapshot.getKey().toString();
+                        //Take only number = pollId integer
+                        pollId = pollId.replaceAll("[^0-9]", "");
+                        dbPollIDMAX = max(dbPollIDMAX, Integer.valueOf(pollId));
                     }
-
-
                 }
-                pollId = dbPollIDMAX+1;
+                pollIdText.setText(String.valueOf(dbPollIDMAX+1));
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -135,9 +146,10 @@ public class HomeFragment extends Fragment {
 
                 if(isPollFilled() && poll == null){
 
-                    poll = new Poll(pollId, pollName.getText().toString(), pollDesc.getText().toString());
+                    int pollIdint = Integer.valueOf(pollIdText.getText().toString());
+                    poll = new Poll(pollIdint, pollName.getText().toString(), pollDesc.getText().toString());
                     questionCounter = addQuestion(questionCounter);
-                    String pollId = "pollId" + questionCounter;
+                    String pollId = "pollId" + pollIdint;
 
                     dbReference.child(pollId).setValue(poll.getPollId());
                     dbReference.child(pollId).child("pollName").setValue(poll.getPollName());
@@ -153,17 +165,21 @@ public class HomeFragment extends Fragment {
 
                         for (String choice:
                              question.getChoices()) {
-                            dbReference.child(pollId).child("Questions").child("questionId"+questionCounter).child("choices").child(String.valueOf(choiceCounter)).setValue(choice);
+                            //dbReference.child(pollId).child("Questions").child("questionId"+questionCounter).child("choices").child(String.valueOf(choiceCounter)).setValue(choice);
+                            dbReference.child(pollId).child("Questions").child("questionId"+questionCounter).child("choices").child(choice).setValue(0);
                             choiceCounter++;
                         }
                         questionCounter++;
 
                     }
                     setIsCreationMode(false);
+                    clear();
+                    showDialogPollId();
                 }
                 else if (poll != null) {
                     //if User Pushed Next but did not want to add new Question
                     setIsCreationMode(false);
+                    clear();
                 }
                 else{
                     AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
@@ -181,6 +197,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 setIsCreationMode(true);//Creation Mode Disactive. Poll would cleaout
+                clear();
             }
         });
 
@@ -200,6 +217,21 @@ public class HomeFragment extends Fragment {
     //Check the mode of the function
     void setIsCreationMode(boolean bool){
         isCreationMode = bool;
+        poll = null;//Clear out List
+    }
+
+    void clear(){
+        //When mode change then clear below
+        if(true){
+            pollName.setText("");
+            pollDesc.setText("");
+            questionDesc.setText("");
+            pollIdText.setText("");
+            for (EditText choice:
+                    choiceList) {
+                choice.setText("");
+            }
+        }
         poll = null;//Clear out List
     }
 
@@ -232,6 +264,26 @@ public class HomeFragment extends Fragment {
         }
         poll.addQuestion(question);
         return questionCounter+1;
+    }
+
+    void showDialogPollId(){
+        AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
+                .setTitle("Create Polls ID is" + pollIdText.getText().toString())
+                .setPositiveButton("OK", null)
+                .setNeutralButton("Copy to Clipboard", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        ClipboardManager clipboardManager = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+
+                        //if Manager Fail, ignore
+                        if(clipboardManager == null){
+                            return;
+                        }
+                        clipboardManager.setPrimaryClip(ClipData.newPlainText("", pollIdText.getText().toString()));
+                    }
+                })
+                .show();
     }
 
 

@@ -10,19 +10,19 @@
         android:id="@+id/buttonSubmitAnswer"
         android:layout_width="294dp"
         android:layout_height="67dp"
+        android:layout_marginBottom="108dp"
         android:text="Submit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.975" />
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/buttonNextAnswer"
         android:layout_width="159dp"
         android:layout_height="65dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="8dp"
         android:text="Next"
         app:layout_constraintBottom_toTopOf="@+id/buttonSubmitAnswer"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -31,8 +31,8 @@
         android:id="@+id/buttonCancelAnswer"
         android:layout_width="155dp"
         android:layout_height="65dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="8dp"
         android:text="Cancel"
         app:layout_constraintBottom_toTopOf="@+id/buttonSubmitAnswer"
         app:layout_constraintStart_toStartOf="parent" />
@@ -46,7 +46,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></LinearLayout>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.373">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Question"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textViewPollName"
@@ -93,7 +102,7 @@
         android:id="@+id/buttonLoadAnswer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="2dp"
         android:text="Load"
         app:layout_constraintStart_toStartOf="parent"

@@ -20,7 +20,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.993" />
+        app:layout_constraintVertical_bias="0.959" />
 
     <Button
         android:id="@+id/buttonNextCreate"
@@ -32,7 +32,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.961" />
 
     <LinearLayout
         android:id="@+id/choiceList"
@@ -125,12 +125,12 @@
         android:id="@+id/buttonCancelCreate"
         android:layout_width="126dp"
         android:layout_height="59dp"
-        android:layout_marginStart="52dp"
+        android:layout_marginStart="44dp"
         android:layout_marginBottom="99dp"
         android:text="Cancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.97" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
