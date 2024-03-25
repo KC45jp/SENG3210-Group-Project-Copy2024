@@ -276,11 +276,12 @@ public class HomeFragment extends Fragment {
 
                         ClipboardManager clipboardManager = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
 
-                        //if Manager Fail, ignore
-                        if(clipboardManager == null){
-                            return;
+                        //clip only if it successd
+                        if(clipboardManager != null){
+                            clipboardManager.setPrimaryClip(ClipData.newPlainText("", pollIdText.getText().toString()));
                         }
-                        clipboardManager.setPrimaryClip(ClipData.newPlainText("", pollIdText.getText().toString()));
+
+
                     }
                 })
                 .show();

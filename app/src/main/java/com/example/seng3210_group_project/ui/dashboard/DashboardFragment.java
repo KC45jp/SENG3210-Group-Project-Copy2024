@@ -196,7 +196,6 @@ public class DashboardFragment extends Fragment {
                                 });
                                 setMode(false);
 
-
                             }
                         })
                         .setNegativeButton("Cancel", null)
