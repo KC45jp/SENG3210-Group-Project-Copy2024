@@ -11,11 +11,24 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/buttonLoadResult"
-            android:layout_width="160dp"
-            android:layout_height="68dp"
-            android:text="Load" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonLoadResult"
+                android:layout_width="wrap_content"
+                android:layout_height="68dp"
+                android:text="Load" />
+
+            <Button
+                android:id="@+id/buttonClear"
+                android:layout_width="wrap_content"
+                android:layout_height="68dp"
+                android:text="Clear"
+                app:rippleColor="#F44336" />
+        </LinearLayout>
 
         <ScrollView
             android:id="@+id/scrollResult"

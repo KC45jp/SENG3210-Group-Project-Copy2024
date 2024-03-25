@@ -33,6 +33,8 @@ public class NotificationsFragment extends Fragment {
 
     //UI
     Button buttonLoad;
+
+    Button buttonClear;
     LinearLayout boxResult;
 
     //FireBase
@@ -66,7 +68,9 @@ public class NotificationsFragment extends Fragment {
         super.onStart();
 
         buttonLoad = getActivity().findViewById(R.id.buttonLoadResult);
+        buttonClear = getActivity().findViewById(R.id.buttonClear);
         boxResult = getActivity().findViewById(R.id.boxResult);
+
 
         //FireBase
         database = FirebaseDatabase.getInstance("https://seng3210-group-project-default-rtdb.firebaseio.com/");
@@ -81,6 +85,13 @@ public class NotificationsFragment extends Fragment {
                 if(pollId != ""){
                     loadResultDialog();
                 }
+            }
+        });
+
+        buttonClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boxResult.removeAllViews();
             }
         });
     }
@@ -116,10 +127,12 @@ public class NotificationsFragment extends Fragment {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String s = getPollInfo(snapshot);
-                createNewTexiView(s);
-                String t = getQuestionInfo(snapshot.child("Questions"));
-                createNewTexiView(t);
+                if(snapshot.hasChildren()){
+                    String s = getPollInfo(snapshot);
+                    createNewTexiView(s);
+                    String t = getQuestionInfo(snapshot.child("Questions"));
+                    createNewTexiView(t);
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
