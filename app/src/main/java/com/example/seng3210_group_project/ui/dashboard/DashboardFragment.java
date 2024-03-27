@@ -4,7 +4,9 @@ import static java.lang.Integer.max;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
 import android.database.DatabaseUtils;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -17,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -124,10 +127,11 @@ public class DashboardFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 pollId = Integer.valueOf(textEditPollId.getText().toString());
                                 LoadDB(textEditPollId, pollIdList);
+                                setMode(true);
                             }
                         })
                         .show();
-                setMode(true);
+
 
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -222,6 +226,7 @@ public class DashboardFragment extends Fragment {
         }
         else {
             //Display poll id does not exist
+            Toast.makeText(getActivity(),"No DB Found", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -312,15 +317,36 @@ public class DashboardFragment extends Fragment {
              poll.getQuestion(0).getChoices()) {
             Button button = new Button(getActivity());
             button.setText(choice);
+
             button.setLayoutParams(new ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
             ));
+
+            //set color
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                button.setBackgroundTintList(ColorStateList.valueOf(Color.LTGRAY));
+            }
+
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     textViewSelectedChoice.setText(button.getText().toString());
-                    button.setBackgroundColor(getResources().getColor(R.color.purple_500));
+
+
+                    for(int i = 0; i <questionBox.getChildCount(); i++){
+                        View childView = questionBox.getChildAt(i);
+                        if(childView instanceof  Button){
+                            //childView.setBackgroundColor(getResources().getColor(R.color.purple_200));
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                childView.setBackgroundTintList(ColorStateList.valueOf(Color.LTGRAY));
+                            }
+                        }
+                    }
+                    //button.setBackgroundColor(getResources().getColor(R.color.purple_500));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        button.setBackgroundTintList(ColorStateList.valueOf(Color.BLUE));
+                    }
                 }
             });
             //Add Button to question Box
