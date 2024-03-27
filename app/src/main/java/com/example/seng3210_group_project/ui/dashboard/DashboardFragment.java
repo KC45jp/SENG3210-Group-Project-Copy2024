@@ -241,7 +241,10 @@ public class DashboardFragment extends Fragment {
 
     }
 
+    //Load Questions
+    //For now, it one so it works but need to be fixed
     private void loadQuestions(String stringPollId){
+        //get Snapshot
         databaseReference.child("pollId" + stringPollId).child("Questions").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -285,12 +288,14 @@ public class DashboardFragment extends Fragment {
         });
     }
 
+    //Update UI to load polls
     void updateUI(){
         textPollName.setText(poll.getPollName());
         textPollDesc.setText(poll.getDescription());
 
         TextView textQuestionDesc = new TextView(getActivity());
 
+        //Set Question Text Box
         textQuestionDesc.setText(poll.getQuestion(0).getDescription());
         textQuestionDesc.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -301,7 +306,7 @@ public class DashboardFragment extends Fragment {
         }
         questionBox.addView(textQuestionDesc);
 
-
+        //Add choice Buttons
         for (String choice:
              poll.getQuestion(0).getChoices()) {
             Button button = new Button(getActivity());
@@ -310,24 +315,24 @@ public class DashboardFragment extends Fragment {
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
             ));
-
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     textViewSelectedChoice.setText(button.getText().toString());
+                    button.setHighlightColor(getResources().getColor(R.color.purple_500));
                 }
             });
-
+            //Add Button to question Box
             questionBox.addView(button);
         }
-
-
     }
 
     void setMode(Boolean mode){
         buttonSubmit.setEnabled(mode);
         buttonCancel.setEnabled(mode);
 
+        //if false mode then clear UI for next one
         if(!mode){
             textPollName.setText("");
             textPollDesc.setText("");
