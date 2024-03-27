@@ -7,133 +7,136 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="136dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <EditText
-            android:id="@+id/editTexPollName"
-            android:layout_width="match_parent"
-            android:layout_height="58dp"
-            android:ems="10"
-            android:hint="PollName"
-            android:inputType="text" />
-
-        <EditText
-            android:id="@+id/editPollDesc"
-            android:layout_width="388dp"
-            android:layout_height="54dp"
-            android:ems="10"
-            android:hint="PollDescrition"
-            android:inputType="text" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="30dp" />
-
-        <EditText
-            android:id="@+id/editTextQuestion"
-            android:layout_width="348dp"
-            android:layout_height="51dp"
-            android:layout_marginStart="5dp"
-            android:ems="10"
-            android:hint="Question"
-            android:inputType="text" />
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="220dp">
-
-            <LinearLayout
-                android:id="@+id/boxChoiceListCreate"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="10dp"
-                android:orientation="vertical">
-
-                <EditText
-                    android:id="@+id/editTextChoise1"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:ems="10"
-                    android:hint="Choice1"
-                    android:inputType="text" />
-
-                <EditText
-                    android:id="@+id/editTextChoice2"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:ems="10"
-                    android:hint="Choice2"
-                    android:inputType="text" />
-
-                <EditText
-                    android:id="@+id/editTextChoice3"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:ems="10"
-                    android:hint="Choice3"
-                    android:inputType="text" />
-
-                <EditText
-                    android:id="@+id/editTextChoice4"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:ems="10"
-                    android:hint="Choice4"
-                    android:inputType="text" />
-
-            </LinearLayout>
-        </ScrollView>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/buttonAddChoiceCreate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:clickable="true"
-            android:src="@android:drawable/ic_input_add"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+        android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/buttonCancelCreate"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="0dp"
-                android:layout_marginBottom="0dp"
-                android:text="Cancel" />
+            <EditText
+                android:id="@+id/editTexPollName"
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:ems="10"
+                android:hint="PollName"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/editPollDesc"
+                android:layout_width="388dp"
+                android:layout_height="54dp"
+                android:ems="10"
+                android:hint="PollDescrition"
+                android:inputType="text" />
 
             <Space
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
+
+            <EditText
+                android:id="@+id/editTextQuestion"
+                android:layout_width="348dp"
+                android:layout_height="51dp"
+                android:layout_marginStart="5dp"
+                android:ems="10"
+                android:hint="Question"
+                android:inputType="text" />
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="388dp"
+                android:layout_height="232dp"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:id="@+id/boxChoiceListCreate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/editTextChoise1"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:ems="10"
+                        android:hint="Choice1"
+                        android:inputType="text" />
+
+                    <EditText
+                        android:id="@+id/editTextChoice2"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:ems="10"
+                        android:hint="Choice2"
+                        android:inputType="text" />
+
+                    <EditText
+                        android:id="@+id/editTextChoice3"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:ems="10"
+                        android:hint="Choice3"
+                        android:inputType="text" />
+
+                    <EditText
+                        android:id="@+id/editTextChoice4"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:ems="10"
+                        android:hint="Choice4"
+                        android:inputType="text" />
+
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/buttonAddChoiceCreate"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_gravity="center"
+                android:clickable="true"
+                android:src="@android:drawable/ic_input_add"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonCancelCreate"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginBottom="0dp"
+                    android:text="Cancel" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/buttonNextCreate"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:text="Next" />
+
+            </LinearLayout>
 
             <Button
-                android:id="@+id/buttonNextCreate"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="right"
-                android:text="Next" />
+                android:id="@+id/buttonSubmitCreate"
+                android:layout_width="match_parent"
+                android:layout_height="66dp"
+                android:text="Create New Poll" />
 
         </LinearLayout>
-
-        <Button
-            android:id="@+id/buttonSubmitCreate"
-            android:layout_width="match_parent"
-            android:layout_height="66dp"
-            android:text="Create New Poll" />
-
-    </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
