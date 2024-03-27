@@ -295,6 +295,7 @@ public class DashboardFragment extends Fragment {
 
         TextView textQuestionDesc = new TextView(getActivity());
 
+
         //Set Question Text Box
         textQuestionDesc.setText(poll.getQuestion(0).getDescription());
         textQuestionDesc.setLayoutParams(new ViewGroup.LayoutParams(
@@ -318,9 +319,8 @@ public class DashboardFragment extends Fragment {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     textViewSelectedChoice.setText(button.getText().toString());
-                    button.setHighlightColor(getResources().getColor(R.color.purple_500));
+                    button.setBackgroundColor(getResources().getColor(R.color.purple_500));
                 }
             });
             //Add Button to question Box
