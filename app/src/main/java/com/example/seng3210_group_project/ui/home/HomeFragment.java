@@ -5,13 +5,10 @@ import static java.lang.Integer.max;
 
 import android.app.AlertDialog;
 import android.content.ClipData;
-import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.icu.text.NumberFormat;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,6 +58,7 @@ public class HomeFragment extends Fragment {
     List<EditText> choiceList = new ArrayList<>();
 
     TextView pollIdText;
+    TextView pollAddedIdText;
 
 
 
@@ -92,6 +90,7 @@ public class HomeFragment extends Fragment {
         questionDesc = getActivity().findViewById(R.id.editTextQuestion);
         //choices = getActivity().findViewById(R.id.choiceList);
         pollIdText = new TextView(getActivity());
+        pollAddedIdText = new TextView(getActivity());
 
         //Comment by Keishi
         //I wanted to make it loop to seach in Liner View but we do not have time for that unfortunatelly.
@@ -150,6 +149,7 @@ public class HomeFragment extends Fragment {
                     poll = new Poll(pollIdint, pollName.getText().toString(), pollDesc.getText().toString());
                     questionCounter = addQuestion(questionCounter);
                     String pollId = "pollId" + pollIdint;
+                    pollAddedIdText.setText(String .valueOf(pollIdint));
 
                     dbReference.child(pollId).setValue(poll.getPollId());
                     dbReference.child(pollId).child("pollName").setValue(poll.getPollName());
@@ -266,9 +266,11 @@ public class HomeFragment extends Fragment {
         return questionCounter+1;
     }
 
+
     void showDialogPollId(){
         AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
-                .setTitle("Create Polls ID is" + pollIdText.getText().toString())
+
+                .setTitle("Create Polls ID is " + pollAddedIdText.getText().toString())
                 .setPositiveButton("OK", null)
                 .setNeutralButton("Copy to Clipboard", new DialogInterface.OnClickListener() {
                     @Override
@@ -278,7 +280,7 @@ public class HomeFragment extends Fragment {
 
                         //clip only if it successd
                         if(clipboardManager != null){
-                            clipboardManager.setPrimaryClip(ClipData.newPlainText("", pollIdText.getText().toString()));
+                            clipboardManager.setPrimaryClip(ClipData.newPlainText("", pollAddedIdText.getText().toString()));
                         }
 
 

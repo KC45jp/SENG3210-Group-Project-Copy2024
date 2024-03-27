@@ -127,6 +127,7 @@ public class DashboardFragment extends Fragment {
                             }
                         })
                         .show();
+                setMode(true);
 
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -202,6 +203,13 @@ public class DashboardFragment extends Fragment {
                         .show();
             }
         });
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setMode(false);
+            }
+        });
+
     }
 
     private void LoadDB(EditText textEditPollId, List<String> pollIdList){
@@ -213,11 +221,7 @@ public class DashboardFragment extends Fragment {
             String s= poll.getDescription();
         }
         else {
-            AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
-                    .setTitle("No DB Found")
-                    .setView(textEditPollId)
-                    .setPositiveButton("OK", null)
-                    .show();
+            //Display poll id does not exist
         }
     }
 
