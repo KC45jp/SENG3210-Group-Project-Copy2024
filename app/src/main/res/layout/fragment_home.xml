@@ -35,56 +35,74 @@
             android:hint="PollDescrition"
             android:inputType="text" />
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
         <EditText
             android:id="@+id/editTextQuestion"
             android:layout_width="348dp"
             android:layout_height="51dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="64dp"
+            android:layout_marginStart="5dp"
             android:ems="10"
             android:hint="Question"
             android:inputType="text" />
 
-        <LinearLayout
-            android:id="@+id/choiceList"
-            android:layout_width="346dp"
-            android:layout_height="240dp"
-            android:layout_marginStart="10dp"
-            android:orientation="vertical">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="220dp">
 
-            <EditText
-                android:id="@+id/editTextChoise1"
+            <LinearLayout
+                android:id="@+id/boxChoiceListCreate"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:ems="10"
-                android:hint="Choice1"
-                android:inputType="text" />
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/editTextChoice2"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:ems="10"
-                android:hint="Choice2"
-                android:inputType="text" />
+                <EditText
+                    android:id="@+id/editTextChoise1"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:ems="10"
+                    android:hint="Choice1"
+                    android:inputType="text" />
 
-            <EditText
-                android:id="@+id/editTextChoice3"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:ems="10"
-                android:hint="Choice3"
-                android:inputType="text" />
+                <EditText
+                    android:id="@+id/editTextChoice2"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:ems="10"
+                    android:hint="Choice2"
+                    android:inputType="text" />
 
-            <EditText
-                android:id="@+id/editTextChoice4"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:ems="10"
-                android:hint="Choice4"
-                android:inputType="text" />
+                <EditText
+                    android:id="@+id/editTextChoice3"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:ems="10"
+                    android:hint="Choice3"
+                    android:inputType="text" />
 
-        </LinearLayout>
+                <EditText
+                    android:id="@+id/editTextChoice4"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:ems="10"
+                    android:hint="Choice4"
+                    android:inputType="text" />
+
+            </LinearLayout>
+        </ScrollView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/buttonAddChoiceCreate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:clickable="true"
+            android:src="@android:drawable/ic_input_add"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,6 +25,7 @@ import com.example.seng3210_group_project.Poll.Poll.Poll;
 import com.example.seng3210_group_project.Poll.Poll.Question;
 import com.example.seng3210_group_project.R;
 import com.example.seng3210_group_project.databinding.FragmentHomeBinding;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -50,12 +52,17 @@ public class HomeFragment extends Fragment {
     Button buttonCreatePoll;
     Button buttonCancel;
 
+
+    FloatingActionButton buttonAddNewChoice;
+
     EditText pollName;
     EditText pollDesc;
     EditText questionDesc;
 
     //View choices;
-    List<EditText> choiceList = new ArrayList<>();
+    //List<EditText> choiceList = new ArrayList<>();
+
+    LinearLayout choiceListBox;
 
     TextView pollIdText;
     TextView pollAddedIdText;
@@ -85,6 +92,7 @@ public class HomeFragment extends Fragment {
 
         buttonCreatePoll = (Button) getActivity().findViewById(R.id.buttonSubmitCreate);
         buttonCancel = (Button) getActivity().findViewById(R.id.buttonCancelCreate);
+        buttonAddNewChoice = getActivity().findViewById(R.id.buttonAddChoiceCreate);
         pollName = (EditText) getActivity().findViewById(R.id.editTexPollName);
         pollDesc = getActivity().findViewById(R.id.editPollDesc);
         questionDesc = getActivity().findViewById(R.id.editTextQuestion);
@@ -100,10 +108,11 @@ public class HomeFragment extends Fragment {
         EditText choice4 = getActivity().findViewById(R.id.editTextChoice4);
 
         //I hate this code but time is money now.
-        choiceList.add(choice1);
-        choiceList.add(choice2);
-        choiceList.add(choice3);
-        choiceList.add(choice4);
+        //choiceList.add(choice1);
+        //choiceList.add(choice2);
+        //choiceList.add(choice3);
+        //choiceList.add(choice4);
+        choiceListBox = getActivity().findViewById(R.id.boxChoiceListCreate);
 
         //Initialize
 
@@ -142,9 +151,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-
+                //User fill UI but poll is null means User create poll with only one Question
                 if(isPollFilled() && poll == null){
-
                     int pollIdint = Integer.valueOf(pollIdText.getText().toString());
                     poll = new Poll(pollIdint, pollName.getText().toString(), pollDesc.getText().toString());
                     questionCounter = addQuestion(questionCounter);
@@ -158,7 +166,6 @@ public class HomeFragment extends Fragment {
                    int questionCounter = 0;
                     for (Question question:
                          poll.getQuestions()) {
-
                         dbReference.child(pollId).child("Questions").child("questionId"+questionCounter).setValue(question.getQuestionId());
                         dbReference.child(pollId).child("Questions").child("questionId" + questionCounter).child("questionDesc").setValue(question.getDescription());
                         int choiceCounter = 0;
@@ -173,13 +180,17 @@ public class HomeFragment extends Fragment {
 
                     }
                     setIsCreationMode(false);
-                    clear();
+                    clearUI();
                     showDialogPollId();
                 }
-                else if (poll != null) {
+                else if (isPollFilled()) {
+                    //if the user has multiple Questions and filled UI
+                    setIsCreationMode(false);
+                    clearUI();
+                } else if (poll != null) {
                     //if User Pushed Next but did not want to add new Question
                     setIsCreationMode(false);
-                    clear();
+                    clearUI();
                 }
                 else{
                     AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
@@ -192,12 +203,20 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        buttonAddNewChoice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                choiceListBox.addView(new androidx.appcompat.widget.AppCompatEditText(getActivity()){{ setHint("New Choice"); }});
+
+            }
+        });
+
 
         buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setIsCreationMode(true);//Creation Mode Disactive. Poll would cleaout
-                clear();
+                clearUI();
             }
         });
 
@@ -220,34 +239,36 @@ public class HomeFragment extends Fragment {
         poll = null;//Clear out List
     }
 
-    void clear(){
+    void clearUI(){
         //When mode change then clear below
         if(true){
             pollName.setText("");
             pollDesc.setText("");
             questionDesc.setText("");
             pollIdText.setText("");
-            for (EditText choice:
-                    choiceList) {
-                choice.setText("");
-            }
+            choiceListBox.removeAllViews();
+            choiceListBox.addView(new androidx.appcompat.widget.AppCompatEditText(getActivity()){{ setHint("choice1"); }});
         }
         poll = null;//Clear out List
     }
 
     //Check if user input data or return false
     private Boolean isPollFilled(){
-        int i = 0;
+        //int i = 0;
 
         if(pollName.getText().toString().length() != 0 &&
         pollDesc.getText().toString().length() != 0 &&
         questionDesc.getText().toString().length() != 0){
-            for (EditText text:
-                 choiceList) {
-                if(text.getText().toString().length() != 0){
-                    return true;
+
+            for(int i = 0; i <choiceListBox.getChildCount(); i++){
+                View childView = choiceListBox.getChildAt(i);
+                if(childView instanceof  EditText){
+                    if(((EditText) childView).getText().toString().length() != 0){
+                        return true;
+                    }
                 }
             }
+
         }
         return false;
     }
@@ -257,11 +278,18 @@ public class HomeFragment extends Fragment {
 
         question = new Question(questionCounter, questionDesc.getText().toString());
         //find out
-        for (EditText choice: choiceList) {
-            if(choice.getText().toString().length() != 0){
-                question.addChoices(choice.getText().toString());
+
+        for(int i = 0; i <choiceListBox.getChildCount(); i++){
+            View childView = choiceListBox.getChildAt(i);
+            if(childView instanceof  EditText){
+                if(((EditText) childView).getText().toString().length() != 0){
+                    question.addChoices(((EditText) childView).getText().toString());
+                }
             }
         }
+
+
+
         poll.addQuestion(question);
         return questionCounter+1;
     }
