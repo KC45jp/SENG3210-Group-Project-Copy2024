@@ -16,6 +16,7 @@ public class Poll {
     private String password;
     private Question question;
 
+
     //For Future use with user authentication
     //private String manager;
 
@@ -64,6 +65,10 @@ public class Poll {
 
         //Seriously no Hash!? Yeah I know... it is better but sometime I cannot
         this.password = password;
+    }
+
+    public String getPassword(){
+        return password;
     }
 
     //Add question to the poll

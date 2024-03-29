@@ -42,6 +42,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class DashboardFragment extends Fragment {
@@ -50,6 +51,8 @@ public class DashboardFragment extends Fragment {
     DatabaseReference databaseReference;
 
     int pollId;
+
+    String pollPassword;
 
     int questionId = 0;//We only have one question for this deploy. question ID is always 0.
 
@@ -71,6 +74,9 @@ public class DashboardFragment extends Fragment {
 
     //Communication Devise
     TextView textViewSelectedChoice;
+
+    List<String> pollIdList = new ArrayList<>();
+    HashMap<String, String> pollList = new HashMap<>();
 
 
 
@@ -113,32 +119,22 @@ public class DashboardFragment extends Fragment {
         buttonLoad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                EditText textEditPollId = new EditText(getActivity());
-                List<String> pollIdList = new ArrayList<>();
-
                 setMode(false);
-
-                AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
-                        .setTitle("Input Poll Id")
-                        .setView(textEditPollId)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                pollId = Integer.valueOf(textEditPollId.getText().toString());
-                                LoadDB(textEditPollId, pollIdList);
-                                setMode(true);
-                            }
-                        })
-                        .show();
-
-
+                loadAlertDialog();
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for (DataSnapshot pollSnapshot:
                                 snapshot.getChildren()) {
-                            pollIdList.add(pollSnapshot.getKey().toString());
+                            //pollIdList.add(pollSnapshot.getKey().toString());
+
+                            //if password Exist, then input password. if not, then put null
+                            if(pollSnapshot.hasChild("pollPassword")){
+                                pollList.put(pollSnapshot.getKey().toString(), pollSnapshot.child("pollPassword").getValue().toString());
+                            }
+                            else{
+                                pollList.put(pollSnapshot.getKey().toString(), "");
+                            }
                         }
                     }
 
@@ -216,9 +212,60 @@ public class DashboardFragment extends Fragment {
 
     }
 
-    private void LoadDB(EditText textEditPollId, List<String> pollIdList){
-        String stringPollId = (textEditPollId.getText().toString());
-        if (pollIdList.contains("pollId" +  stringPollId)) {
+    private void loadAlertDialog(){
+        EditText textEditPollId = new EditText(getActivity());
+        EditText textEditPollPassword = new EditText(getActivity());
+
+        textEditPollId.setHint("ID");
+        textEditPollPassword.setHint("Password");
+
+        LinearLayout pollInfoGroup = new LinearLayout(getActivity());
+        pollInfoGroup.addView(textEditPollId);
+        pollInfoGroup.addView(textEditPollPassword);
+
+
+        AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
+                .setTitle("Input Poll Id and Password")
+                .setView(pollInfoGroup)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        pollId = Integer.valueOf(textEditPollId.getText().toString());
+                        pollPassword = textEditPollPassword.getText().toString();
+
+                        if(pollPassword.length() != 0){
+                            LoadDB(textEditPollId.getText().toString(), pollPassword);
+                        }
+                        else{
+                            LoadDB(textEditPollId.getText().toString());
+                        }
+
+                        setMode(true);
+                    }
+                })
+                .show();
+
+    }
+
+    //if there are No password
+    private void LoadDB(String stringPollId){
+
+        //The key exist and the password is null
+        if (pollList.containsKey("pollId" +  stringPollId) && pollList.get("pollId" +  stringPollId).length() == 0) {
+            poll = new Poll();
+            poll.setPoll_id(Integer.valueOf(stringPollId));
+            loadPoll(stringPollId);
+            String s= poll.getDescription();
+        }
+        else {
+            //Display poll id does not exist
+            Toast.makeText(getActivity(),"No DB Found", Toast.LENGTH_LONG).show();
+        }
+    }
+    //if there are password
+    private void LoadDB(String stringPollId, String pollPassword){
+
+        if (pollList.containsKey("pollId" +  stringPollId)&& pollList.get("pollId" +  stringPollId).equals(pollPassword)) {
             poll = new Poll();
             poll.setPoll_id(Integer.valueOf(stringPollId));
             loadPoll(stringPollId);
@@ -240,57 +287,56 @@ public class DashboardFragment extends Fragment {
 
                 poll.setPollName(pollName);
                 poll.setDescription(pollDesc);
+
+
+                loadQuestions(snapshot.child("Questions"));
             }
         });
-        loadQuestions(stringPollId);
+
 
     }
 
     //Load Questions
     //For now, it one so it works but need to be fixed
-    private void loadQuestions(String stringPollId){
+    private void loadQuestions(DataSnapshot snapshot){
         //get Snapshot
-        databaseReference.child("pollId" + stringPollId).child("Questions").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                DataSnapshot snapshot = task.getResult();
-                int i = 0;
-                Question question = new Question();
 
-                for (DataSnapshot questionSnapShot:
-                        snapshot.child("questionId" + i).getChildren()) {
+        int i = 0;
+        Question question = new Question();
 
-                    DataSnapshot snapshot1 = questionSnapShot;
+        for (DataSnapshot questionSnapShot:
+                snapshot.child("questionId" + i).getChildren()) {
 
-                    question.setQuestionId(i);
+            DataSnapshot snapshot1 = questionSnapShot;
 
-                    if(questionSnapShot.getKey().toString().equals("questionDesc")){
-                        question.setDescription(questionSnapShot.getValue().toString());
-                    }
-                    if (questionSnapShot.getKey().toString().equals("choices")) {
-                        for (DataSnapshot choicesSnapshot:
-                                questionSnapShot.getChildren()) {
-                            String choice = choicesSnapshot.getKey().toString();
-                            question.addChoices(choice);
-                        }
-                    }
+            question.setQuestionId(i);
 
-                    String f= question.getDescription();
-                    int g = question.choiceLength();
-
-                    if(question.getDescription() != null && question.choiceLength() != 0){
-                        poll.addQuestion(question);
-                        question = new Question();
-                        i++;
-                        if(!snapshot.child("questionId" + i).exists()){
-                            break;
-                        }
-                    }
-                }
-                //Deal with UI
-                updateUI();
+            if(questionSnapShot.getKey().toString().equals("questionDesc")){
+                question.setDescription(questionSnapShot.getValue().toString());
             }
-        });
+            if (questionSnapShot.getKey().toString().equals("choices")) {
+                for (DataSnapshot choicesSnapshot:
+                        questionSnapShot.getChildren()) {
+                    String choice = choicesSnapshot.getKey().toString();
+                    question.addChoices(choice);
+                }
+            }
+
+            String f= question.getDescription();
+            int g = question.choiceLength();
+
+            if(question.getDescription() != null && question.choiceLength() != 0){
+                poll.addQuestion(question);
+                question = new Question();
+                i++;
+                if(!snapshot.child("questionId" + i).exists()){
+                    break;
+                }
+            }
+        }
+        //Deal with UI
+        updateUI();
+
     }
 
     //Update UI to load polls

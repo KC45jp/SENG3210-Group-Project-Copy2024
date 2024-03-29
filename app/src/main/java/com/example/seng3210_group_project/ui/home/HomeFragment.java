@@ -67,6 +67,8 @@ public class HomeFragment extends Fragment {
     TextView pollIdText;
     TextView pollAddedIdText;
 
+    EditText passwordText;
+
 
 
 
@@ -96,6 +98,7 @@ public class HomeFragment extends Fragment {
         pollName = (EditText) getActivity().findViewById(R.id.editTexPollName);
         pollDesc = getActivity().findViewById(R.id.editPollDesc);
         questionDesc = getActivity().findViewById(R.id.editTextQuestion);
+        passwordText = getActivity().findViewById(R.id.editPassword);
         //choices = getActivity().findViewById(R.id.choiceList);
         pollIdText = new TextView(getActivity());
         pollAddedIdText = new TextView(getActivity());
@@ -179,6 +182,12 @@ public class HomeFragment extends Fragment {
                         questionCounter++;
 
                     }
+
+                    //if there is password set password
+                    if(passwordText.getText().toString().length() != 0){
+                        dbReference.child(pollId).child("pollPassword").setValue(passwordText.getText().toString());
+                    }
+
                     setIsCreationMode(false);
                     clearUI();
                     showDialogPollId();
@@ -247,6 +256,7 @@ public class HomeFragment extends Fragment {
             questionDesc.setText("");
             pollIdText.setText("");
             choiceListBox.removeAllViews();
+            passwordText.setText("");
             choiceListBox.addView(new androidx.appcompat.widget.AppCompatEditText(getActivity()){{ setHint("choice1"); }});
         }
         poll = null;//Clear out List
