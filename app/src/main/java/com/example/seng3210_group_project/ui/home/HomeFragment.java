@@ -15,9 +15,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -59,8 +61,8 @@ public class HomeFragment extends Fragment {
     EditText pollDesc;
     EditText questionDesc;
 
-    //View choices;
-    //List<EditText> choiceList = new ArrayList<>();
+    ScrollView MainScrollView;
+
 
     LinearLayout choiceListBox;
 
@@ -92,9 +94,11 @@ public class HomeFragment extends Fragment {
 
 
 
+        MainScrollView = getActivity().findViewById(R.id.MainScrollView);
         buttonCreatePoll = (Button) getActivity().findViewById(R.id.buttonSubmitCreate);
         buttonCancel = (Button) getActivity().findViewById(R.id.buttonCancelCreate);
         buttonAddNewChoice = getActivity().findViewById(R.id.buttonAddChoiceCreate);
+
         pollName = (EditText) getActivity().findViewById(R.id.editTexPollName);
         pollDesc = getActivity().findViewById(R.id.editPollDesc);
         questionDesc = getActivity().findViewById(R.id.editTextQuestion);
@@ -103,18 +107,12 @@ public class HomeFragment extends Fragment {
         pollIdText = new TextView(getActivity());
         pollAddedIdText = new TextView(getActivity());
 
+
         //Comment by Keishi
         //I wanted to make it loop to seach in Liner View but we do not have time for that unfortunatelly.
         EditText choice1 = getActivity().findViewById(R.id.editTextChoise1);
         EditText choice2 = getActivity().findViewById(R.id.editTextChoice2);
-        EditText choice3 = getActivity().findViewById(R.id.editTextChoice3);
-        EditText choice4 = getActivity().findViewById(R.id.editTextChoice4);
 
-        //I hate this code but time is money now.
-        //choiceList.add(choice1);
-        //choiceList.add(choice2);
-        //choiceList.add(choice3);
-        //choiceList.add(choice4);
         choiceListBox = getActivity().findViewById(R.id.boxChoiceListCreate);
 
         //Initialize
@@ -148,7 +146,6 @@ public class HomeFragment extends Fragment {
         });
 
         buttonCreatePoll.setOnClickListener(new View.OnClickListener() {
-
             //I feel this questionCOunter should be somewhere else but I could not find better way
             int questionCounter = 0;
             @Override
@@ -215,7 +212,10 @@ public class HomeFragment extends Fragment {
         buttonAddNewChoice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //add new Text box for new choice
                 choiceListBox.addView(new androidx.appcompat.widget.AppCompatEditText(getActivity()){{ setHint("New Choice"); }});
+                //Scroll to down
+                MainScrollView.fullScroll(View.FOCUS_DOWN);
 
             }
         });

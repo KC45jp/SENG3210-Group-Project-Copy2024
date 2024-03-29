@@ -8,8 +8,13 @@
     tools:context=".ui.home.HomeFragment">
 
     <ScrollView
-        android:layout_width="413dp"
-        android:layout_height="609dp">
+        android:id="@+id/MainScrollView"
+        android:layout_width="377dp"
+        android:layout_height="503dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:id="@+id/linearLayout2"
@@ -54,52 +59,30 @@
                 android:hint="Question"
                 android:inputType="text" />
 
-            <androidx.core.widget.NestedScrollView
-                android:layout_width="388dp"
-                android:layout_height="150dp"
-                android:fillViewport="true">
+            <LinearLayout
+                android:id="@+id/boxChoiceListCreate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:id="@+id/boxChoiceListCreate"
+                <EditText
+                    android:id="@+id/editTextChoise1"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:orientation="vertical">
+                    android:layout_height="50dp"
+                    android:ems="10"
+                    android:hint="Choice1"
+                    android:inputType="text" />
 
-                    <EditText
-                        android:id="@+id/editTextChoise1"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:ems="10"
-                        android:hint="Choice1"
-                        android:inputType="text" />
+                <EditText
+                    android:id="@+id/editTextChoice2"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:ems="10"
+                    android:hint="Choice2"
+                    android:inputType="text" />
 
-                    <EditText
-                        android:id="@+id/editTextChoice2"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:ems="10"
-                        android:hint="Choice2"
-                        android:inputType="text" />
-
-                    <EditText
-                        android:id="@+id/editTextChoice3"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:ems="10"
-                        android:hint="Choice3"
-                        android:inputType="text" />
-
-                    <EditText
-                        android:id="@+id/editTextChoice4"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:ems="10"
-                        android:hint="Choice4"
-                        android:inputType="text" />
-
-                </LinearLayout>
-            </androidx.core.widget.NestedScrollView>
+            </LinearLayout>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/buttonAddChoiceCreate"
