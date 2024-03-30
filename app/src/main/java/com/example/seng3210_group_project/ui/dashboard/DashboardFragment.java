@@ -230,17 +230,25 @@ public class DashboardFragment extends Fragment {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        pollId = Integer.valueOf(textEditPollId.getText().toString());
-                        pollPassword = textEditPollPassword.getText().toString();
 
-                        if(pollPassword.length() != 0){
-                            LoadDB(textEditPollId.getText().toString(), pollPassword);
-                        }
-                        else{
-                            LoadDB(textEditPollId.getText().toString());
+                        if(!textEditPollId.getText().toString().isEmpty()){
+                            pollId = Integer.valueOf(textEditPollId.getText().toString());
+                            pollPassword = textEditPollPassword.getText().toString();
+
+
+
+                            if(pollPassword.length() != 0){
+                                LoadDB(textEditPollId.getText().toString(), pollPassword);
+                            }
+                            else{
+                                LoadDB(textEditPollId.getText().toString());
+                            }
+
+                            setMode(true);
+
                         }
 
-                        setMode(true);
+
                     }
                 })
                 .show();
