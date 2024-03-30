@@ -378,6 +378,7 @@ public class DashboardFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     textViewSelectedChoice.setText(button.getText().toString());
+                    buttonSubmit.setEnabled(true);
 
 
                     for(int i = 0; i <questionBox.getChildCount(); i++){
@@ -401,11 +402,12 @@ public class DashboardFragment extends Fragment {
     }
 
     void setMode(Boolean mode){
-        buttonSubmit.setEnabled(mode);
+
         buttonCancel.setEnabled(mode);
 
         //if false mode then clear UI for next one
         if(!mode){
+            buttonSubmit.setEnabled(mode);
             textPollName.setText("");
             textPollDesc.setText("");
             questionBox.removeAllViews();

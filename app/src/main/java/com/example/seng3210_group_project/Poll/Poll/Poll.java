@@ -13,9 +13,9 @@ public class Poll {
     private String pollName;
     private String description;
 
-    private String password;
-    private Question question;
 
+    //Password, bit questionable to retain in here
+    //private String password;
 
     //For Future use with user authentication
     //private String manager;
@@ -23,10 +23,11 @@ public class Poll {
     ArrayList<Question> questionList;
 
 
+    //Constructor1
     public Poll(){
         questionList = new ArrayList<>();
     }
-    //Constructor
+    //Constructor2
     public Poll(int pollId, String pollName, String description){
         this.pollId = pollId;
         this.pollName = pollName;
@@ -58,18 +59,8 @@ public class Poll {
 
     public String getPollName(){ return pollName;};
 
+    //
     //public String getManager(){return  manager;}
-
-
-    public void setPassword(String password) {
-
-        //Seriously no Hash!? Yeah I know... it is better but sometime I cannot
-        this.password = password;
-    }
-
-    public String getPassword(){
-        return password;
-    }
 
     //Add question to the poll
     public void addQuestion(Question question){
@@ -93,11 +84,13 @@ public class Poll {
     }
 
 
+    //Not in use because we have only one question on this release
     public int questionLength(){
         return questionList.size();
     }
 
-    public void clear(){
+    //Not in use because we have only one question on this release
+    public void clearQuestion(){
         questionList.clear();
     }
 
