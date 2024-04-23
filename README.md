@@ -2,6 +2,13 @@
 
 Make android app using principle learned in class
 
+Applications should have following features
+- [ ] Create Vote
+- [ ] Vote for created vote
+- [ ] View Vote Result
+- [ ] Login - Admin and guest account
+
+
 # TODO
 
 - [ ] brainstorm
